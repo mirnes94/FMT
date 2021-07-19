@@ -1,0 +1,141 @@
+﻿@**
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using LogosoftProjekat.ViewModel
+@using LogosoftProjekat.Helper
+@model ToDoPrikaziVM
+@{
+
+}
+
+
+
+
+
+
+
+
+<div style=" position:fixed; right: 10%;top:0.5%">
+    <i class="fas fa-sign-out-alt"> </i>
+    <div class="row">
+        <div class="column"><span class="logout">@Context.GetLoggedUser().FirstName.Substring(0, 1)@Context.GetLoggedUser().LastName.Substring(0, 1) </span></div>
+        <div class="column"><img style="margin-left:20px;margin-top:1px" class="avatar" height="40" width="40" src="~/profile/profil-picture.jpg" /></div>
+        <span style="margin-left:10px"><a asp-controller="Identity" asp-action="Login" class="nav-link"><b>Log out</b></a></span>
+
+    </div>
+</div>
+
+
+
+@using (Html.BeginForm("Index", "ToDo", FormMethod.Get))
+{
+
+    <div>
+        <div class="row">
+
+            <div class="column"><b>TO DO Search:</b><input placeholder="Type something" type="text" name="searchString" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"></div>
+            <div class="column"><b>TO DO date from:</b> <input placeholder="Pick a date" type="datetime-local" name="from" class="form-control" /></div>
+            <div class="column"><b>TO DO date to:</b> <input placeholder="Pick a date" type="datetime-local" name="to" class="form-control" /></div>
+            <div class="column"><b>TO DO status (0-in progress/1-completed):</b><input  placeholder="Pick a status" type="number" min="0" max="1" name="isComplete" class="form-control" /></div>
+            
+            <div class="column" style="position:center; margin-top:25px;margin-right:5px">
+                <button class="btn btn-info" type="submit" asp-action="SearchToDo">
+                    <i class="fa fa-search fa-sm "></i>
+                    Search
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <br />
+
+
+
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><a asp-controller="UsersToDo" asp-action="Index" asp-route-userId="@Model.UserId" class="btn btn-info">Add ToDo</a></th>
+                </tr>
+                <tr>
+                    <th><a asp-controller="ToDo" asp-action="Create" class="btn btn-info">Create ToDo</a></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    @foreach (var x in Model.rows)
+    {
+<div style="margin-left:150px" class="container">
+    
+    <div class="list-group">
+        <div class="list-group-item active" style="background-color: #f4f0ec;text-decoration:none">
+            <h4 class="list-group-item-heading">@x.Title</h4>
+
+            <span class="list-group-item-text">Created on:@x.CreatedOn</span>
+         
+           
+            <span style="margin-left:10%;" class="list-group-item-text">@(x.IsComplete?"Completed":"In progress")</span>
+            
+          
+            @if (x.CreatedBy.UserId == Model.UserId)
+            {
+                <a class="list-group-item-action" asp-controller="ToDo" asp-action="Details" asp-route-id="@x.TodoId"><b>. . .</b></a>
+            }
+            else
+            {
+                <span style="margin-left:90px"></span>
+            }
+
+            <span class="name">@x.CreatedBy.FirstName.Substring(0, 1)@x.CreatedBy.LastName.Substring(0, 1)</span>
+
+        </div>
+    </div>
+</div>
+
+    }
+
+}
+
+<style>
+    .name {
+        height: 50px;
+        width: 50px;
+        border-radius: 70%;
+        display: inline-block;
+        font-size: 30px;
+        margin-left: 10%;
+        background-color: aqua;
+        text-decoration: none
+    }
+
+    .logout {
+        height: 40px;
+        width: 40px;
+        border-radius: 60%;
+        display: inline-block;
+        font-size: 25px;
+        margin-left: 30%;
+        background-color: aqua;
+        text-decoration: none
+    }
+
+    .list-group-item-text {
+        color: #c0c0c0;
+    }
+
+    .list-group {
+        margin-right: 40%;
+        padding-bottom: 1%;
+    }
+
+    .list-group-item-heading {
+        color: #a9a9a9;
+    }
+
+    .list-group-item-action {
+        margin-left: 10%;
+        color: deepskyblue;
+    }
+</style>
+

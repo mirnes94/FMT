@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using LogosoftProjekat.Helper
+@using LogosoftProjekat.EntityModels;
+@model LogosoftProjekat.ViewModel.UsersToDoAddVM;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add ToDo</title>
+</head>
+<body>
+    <div style=" position:fixed; right: 10%;top:0.5%">
+        <i class="fas fa-sign-out-alt"> </i>
+        <div class="row">
+            <div class="column"><span class="logout">@Context.GetLoggedUser().FirstName.Substring(0, 1)@Context.GetLoggedUser().LastName.Substring(0, 1) </span></div>
+            <div class="column"><img style="margin-left:20px;margin-top:1px" class="avatar" height="40" width="40" src="~/profile/profil-picture.jpg" /></div>
+            <span style="margin-left:10px"><a asp-controller="Identity" asp-action="Login" class="nav-link"><b>Log out</b></a></span>
+
+        </div>
+    </div>
+    @using (Html.BeginForm("Add", "UsersToDo", FormMethod.Post))
+    {
+
+        <div class="form-group">
+            <label asp-for="ToDoId">ToDo:</label>
+            <select asp-for="ToDoId" class="form-control" asp-items="@Model.ToDos"></select>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="UserId">User:</label>
+            <select asp-for="UserId" class="form-control" asp-items="@Model.Users"></select>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add</button>
+    }
+
+
+
+</body>
+</html>
+<style>
+    .logout {
+        height: 40px;
+        width: 40px;
+        border-radius: 60%;
+        display: inline-block;
+        font-size: 25px;
+        margin-left: 30%;
+        background-color: aqua;
+        text-decoration: none
+    }
+</style>
